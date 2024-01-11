@@ -1,0 +1,44 @@
+server:
+  port: 8081
+##############################################
+spring:
+  datasource:
+    username: edu
+    password: 3dUPL4tf0RM@#123
+    url: jdbc:mysql://14.225.254.143:3306/edu_platform?useUnicode=yes&characterEncoding=UTF-8
+  jpa:
+    generate-ddl: true
+    open-in-view: true
+    show-sql: true
+    database: mysql
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: longpham162@gmail.com
+    password: zyrrvmstupttkywo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+##############################################
+jwt:
+  issuer: issuer
+  subject: subject
+  audience: audience
+  audiences: audience
+  expiration: 1440
+  notBefore: 5.0
+  privateKey: private.pem
+  publicKey: public.pem
+##############################################
+upload:
+  avatar:
+    path: /Users/longpham3/Downloads
+  diploma:
+    path: /Users/longpham3/Downloads
+  idPassport:
+    path: /Users/longpham3/Downloads
+  certificates:
+    path: /Users/longpham3/Downloads

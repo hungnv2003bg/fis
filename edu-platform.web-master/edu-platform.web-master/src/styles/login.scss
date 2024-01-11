@@ -1,0 +1,32 @@
+.login {
+  width: 100%;
+
+  .login-form {
+    width: 350px;
+    margin: 100px auto;
+
+    .login-type {
+    }
+
+    .form {
+      .form-item {
+        label {
+          display: block;
+        }
+
+        input {
+          width: 100%;
+          height: 25px;
+          font-size: 14px;
+        }
+
+        .btn-login {
+          background: blue;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}

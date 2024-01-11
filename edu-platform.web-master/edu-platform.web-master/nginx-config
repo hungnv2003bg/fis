@@ -1,0 +1,29 @@
+upstream clazzi.xyz {
+    server localhost:4000;
+}
+
+server {
+    server_name  clazzi.xyz;
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/clazzi.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/clazzi.xyz/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    location / {
+        proxy_pass http://clazzi.xyz;
+    }
+}
+
+server {
+    if ($host = clazzi.xyz) {
+        return 301 https://$host$request_uri;
+    }
+
+
+    server_name  clazzi.xyz;
+    return 301   https://$host$request_uri;
+
+}

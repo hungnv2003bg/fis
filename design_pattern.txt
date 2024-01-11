@@ -1,0 +1,7 @@
+command, adapter,builder,bri,single,factory
+-adapter
+-builder:xây dựng 1 đối tượng phức tạp = các đối tuowgnj đơn giản(nhiều thuộc tính)
+interface cung cấp mỗi thuộc tính mà builder cần để thiết lập thuộc tính
+singleton:Đảm bảo rằng một class chỉ có duy nhất một instance
+factory:Mô hình này sử dụng các lớp factory để tạo ra các đối tượng mà không cần chỉ rõ chính xác trong mã nguồn lớp con nào của lớp đối tượng sẽ được tạo
+bridge: gồm 1 giao diện làm cầu nối giữ lớp trừu tượng và lớp cài đặt

@@ -1,0 +1,13 @@
+I.Solid
+S: Mỗi class chỉ nên có 1 nhiệm vụ
+O: Khi muốn thêm chức năng thì kế thừa class đó
+L: Mọi class con, class dẫn xuất phải có khả năng thay thế cho class cơ sở hoặc class cha mà không làm thay đổi ảnh hưởng đến ứng dụng
+I: Các interfaces nên được chia thành các interface nhỏ hơn, các lớp triển khaichỉ cần quan tâm đến các phương thức mà chúng ta quan tâm
+D: Module cấp cao không nên phụ thuộc vào module cấp thấp, mà cả 2 nên phụ thuộc vào abstraction
+
+II.IoC DI
+IoC. Các module cấp cao không nên phụ thuộc vào các modules cấp thấp. Cả 2 nên phụ thuộc vào abstraction.
+Interface không nên phụ thuộc vào chi tiết , mà ngược lại.Class giao tiếp với nhau thông qua interface
+DI.Các module không bao giao tiếp trực tiếp với nhau mà thông qua interface.module cấp thấp sẽ implement interface, module cấp cao sẽ gọi module cấp thấp qua interface
+Dependency sẽ được container truyền vào class thông qua constructor của class đó, hay qua hàm setter
+ 
