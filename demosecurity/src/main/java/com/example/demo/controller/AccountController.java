@@ -40,8 +40,5 @@ public class AccountController {
                                            @RequestBody AccountUpdateRequest accountUpdateRequest) {
         return ResponseEntity.ok(accountService.updateAccount(id, accountUpdateRequest));
     }
-//    @GetMapping("/index")
-//    public String index(){
-//        return "index";
-//    }
+
 }
