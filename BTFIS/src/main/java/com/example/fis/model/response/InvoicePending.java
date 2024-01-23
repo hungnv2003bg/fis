@@ -20,5 +20,4 @@ public class InvoicePending {
     private List<OrderDetail> orderDetailList;
     private LocalDateTime createDate;
     private StatusOrder status;
-    private OrderResponse orderResponse;
 }

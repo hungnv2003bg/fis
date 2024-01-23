@@ -18,11 +18,15 @@ public interface OrderService {
 
     List<InvoiceCompleted> getInvoiceCompleted();
 
-    InvoicePendingShip toInvoicePendingShip(Long id, OrderUpdateRequest updateRequest);
+    List<OrderResponse> getOrders();
+
+//    InvoicePendingShip toInvoicePendingShip(Long id, OrderUpdateRequest updateRequest);
 
 //    OrderResponse toInvoiceShipping(Long id, OrderUpdateRequest updateRequest);
 //
 //    OrderResponse toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest);
 
-    OrderResponse updateStatus(Long id, OrderUpdateRequest updateRequest);
+//    OrderResponse updateStatus(Long id, OrderUpdateRequest updateRequest);
+
+    OrderResponse updateOrderStatus(Long id, String newStatus);
 }

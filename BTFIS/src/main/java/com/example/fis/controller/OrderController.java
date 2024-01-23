@@ -1,10 +1,13 @@
 package com.example.fis.controller;
 
 import com.example.fis.model.request.order.OrderUpdateRequest;
+import com.example.fis.model.response.OrderResponse;
 import com.example.fis.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -12,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @GetMapping
+    public ResponseEntity<?> getOrders() {
+        return ResponseEntity.ok(orderService.getOrders());
+    }
 
     @GetMapping("/cancel")
     public ResponseEntity<?> getInvoiceCancel() {
@@ -38,15 +46,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getInvoiceCompleted());
     }
 
-    @PutMapping("/topendingship/{id}")
-    public ResponseEntity<?> toInvoicePendingShip(@PathVariable Long id, @RequestBody OrderUpdateRequest updateRequest) {
-        return ResponseEntity.ok(orderService.toInvoicePendingShip(id, updateRequest));
-    }
-
 
     @PutMapping("/status/{id}")
-    public ResponseEntity<?> toStatusInvoice(@PathVariable Long id, @RequestBody OrderUpdateRequest updateRequest) {
-        return ResponseEntity.ok(orderService.updateStatus(id, updateRequest));
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        String newStatus = requestBody.get("statusOrder");
+        OrderResponse updatedOrder = orderService.updateOrderStatus(id, newStatus);
+        return ResponseEntity.ok(updatedOrder);
     }
 
 

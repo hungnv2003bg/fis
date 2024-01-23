@@ -11,7 +11,7 @@ public class ErrorCode {
     public static ResponseStatus PRICE_NOT_BLANK = new ResponseStatus("PRICE_NOT_BLANK", "PRICE NOT BLANK!", HttpStatus.BAD_REQUEST);
     public static ResponseStatus INVALID_PRICE_INPUT = new ResponseStatus("INVALID_PRICE_INPUT", "INVALID PRICE INPUT!", HttpStatus.BAD_REQUEST);
     public static ResponseStatus PRODUCT_NOT_FOUD = new ResponseStatus("PRODUCT_NOT_FOUD", "PRODUCT NOT FOUND!", HttpStatus.NOT_FOUND);
-    public static ResponseStatus INVALID_STATUS = new ResponseStatus("INVALID_STATUS", "INVALID STATUS!", HttpStatus.BAD_REQUEST);
+    public static ResponseStatus INVALID_STATUS = new ResponseStatus("INVALID_STATUS", "INVALID STATUS!", HttpStatus.INTERNAL_SERVER_ERROR);
     public static ResponseStatus QUANTITY_NOT_BLANK = new ResponseStatus("QUANTITY_NOT_BLANK", "QUANTITY NOT BLANK!", HttpStatus.BAD_REQUEST);
     public static ResponseStatus CATEGORYID_NOT_BLANK = new ResponseStatus("CATEGORYID_NOT_BLANK", "CATEGORYID NOT BLANK!", HttpStatus.INTERNAL_SERVER_ERROR);
 

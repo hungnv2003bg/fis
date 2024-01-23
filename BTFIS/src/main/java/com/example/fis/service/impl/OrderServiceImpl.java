@@ -5,13 +5,13 @@ import com.example.fis.enums.StatusOrder;
 import com.example.fis.exception.BusinessException;
 import com.example.fis.exception.ErrorCode;
 import com.example.fis.mapper.*;
-import com.example.fis.model.request.order.OrderUpdateRequest;
 import com.example.fis.model.response.*;
 import com.example.fis.repository.OrderRepo;
 import com.example.fis.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,74 +78,46 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public InvoicePendingShip toInvoicePendingShip(Long id, OrderUpdateRequest updateRequest) {
-        Optional<Order> orderOptional = orderRepo.findById(id);
-        if (orderOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
-        }
-        Order order = orderOptional.get();
-        order.setStatusOrder(updateRequest.getStatusOrder());
-        orderRepo.save(order);
-        return pendingShipMapper.toInvoicePendingShip(order);
+    public List<OrderResponse> getOrders() {
+        List<Order> orderList = orderRepo.findAll();
+        return orderList.stream().map(orderMapper::toOrderResponse).toList();
     }
 
-//    @Override
-//    public OrderResponse toInvoiceShipping(Long id, OrderUpdateRequest updateRequest) {
-//        Optional<Order> orderOptional = orderRepo.findById(id);
-//        if (orderOptional.isEmpty()) {
-//            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
-//        }
-//        Order order = orderOptional.get();
-//        order.setStatusOrder(updateRequest.getStatusOrder());
-//        orderRepo.save(order);
-//        return orderMapper.toOrderResponse(order);
-//    }
-//
-//    @Override
-//    public OrderResponse toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest) {
-//        Optional<Order> orderOptional = orderRepo.findById(id);
-//        if (orderOptional.isEmpty()) {
-//            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
-//        }
-//        Order order = orderOptional.get();
-//        order.setStatusOrder(updateRequest.getStatusOrder());
-//        orderRepo.save(order);
-//        return orderMapper.toOrderResponse(order);
-//    }
 
     @Override
-    public OrderResponse updateStatus(Long id, OrderUpdateRequest updateRequest) {
+    public OrderResponse updateOrderStatus(Long id, String newStatus) {
         Optional<Order> orderOptional = orderRepo.findById(id);
         if (orderOptional.isEmpty()) {
             throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
         }
+
         Order order = orderOptional.get();
+        StatusOrder targetStatus = StatusOrder.valueOf(newStatus);
 
-
-        StatusOrder newStatus = updateRequest.getStatusOrder();
-
-        StatusOrder currentStatus = order.getStatusOrder();
-
-        if (!check(currentStatus, newStatus)) {
-            throw new BusinessException(ErrorCode.INVALID_STATUS);
-        }
-        order.setStatusOrder(newStatus);
+        check(order, targetStatus);
+        order.setStatusOrder(targetStatus);
         orderRepo.save(order);
 
         return orderMapper.toOrderResponse(order);
     }
 
-    private boolean check(StatusOrder currentStatus, StatusOrder newStatus) {
-        switch (currentStatus) {
-            case CHOXACNHAN:
-                return newStatus == StatusOrder.CHOGIAOHANG;
-            case CHOGIAOHANG:
-                return newStatus == StatusOrder.DANGGIAO;
-            case DANGGIAO:
-                return newStatus == StatusOrder.DAGIAO;
-            default:
-                return false;
+    private void check(Order order, StatusOrder targetStatus) {
+        StatusOrder currentStatus = order.getStatusOrder();
+
+        if (currentStatus == StatusOrder.DANGGIAO && targetStatus == StatusOrder.DAGIAO) {
+            order.setDateShip(LocalDateTime.now());
         }
+
+        if (!isValidStatus(targetStatus)) {
+            throw new BusinessException(ErrorCode.INVALID_STATUS);
+        }
+    }
+
+    private boolean isValidStatus(StatusOrder status) {
+        return status == StatusOrder.CHOGIAOHANG ||
+                status == StatusOrder.DANGGIAO ||
+                status == StatusOrder.DAGIAO ||
+                status == StatusOrder.CHOXACNHAN;
     }
 
 

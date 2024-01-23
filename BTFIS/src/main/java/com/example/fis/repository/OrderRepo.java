@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public interface OrderRepo extends JpaRepository<Order, Long> {
 
     @Query("SELECT SUM(o.orderValue) FROM Order o " +
-            "WHERE o.createDate >= :selectedDateStart and o.createDate <= :selectedDateEnd")
+            "WHERE o.createDate >= :selectedDateStart and o.createDate <= :selectedDateEnd and o.statusOrder = 5")
     BigDecimal sumRevenue(@Param("selectedDateStart") LocalDateTime selectedDateStart,
                           @Param("selectedDateEnd") LocalDateTime selectedDateEnd);
 

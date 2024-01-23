@@ -4,8 +4,8 @@ public enum StatusOrder {
     CHOXACNHAN,
     CHOGIAOHANG,
     DANGGIAO,
-    CHOTHANHTOANBANKING,
     DAGIAO,
+    CHOTHANHTOANBANKING,
     CANCEL,
 }
 
