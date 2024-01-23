@@ -89,28 +89,63 @@ public class OrderServiceImpl implements OrderService {
         return pendingShipMapper.toInvoicePendingShip(order);
     }
 
-    @Override
-    public InvoiceShipping toInvoiceShipping(Long id, OrderUpdateRequest updateRequest) {
-        Optional<Order> orderOptional = orderRepo.findById(id);
-        if (orderOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
-        }
-        Order order = orderOptional.get();
-        order.setStatusOrder(updateRequest.getStatusOrder());
-        orderRepo.save(order);
-        return shippingMapper.toInvoiceShipping(order);
-    }
+//    @Override
+//    public OrderResponse toInvoiceShipping(Long id, OrderUpdateRequest updateRequest) {
+//        Optional<Order> orderOptional = orderRepo.findById(id);
+//        if (orderOptional.isEmpty()) {
+//            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
+//        }
+//        Order order = orderOptional.get();
+//        order.setStatusOrder(updateRequest.getStatusOrder());
+//        orderRepo.save(order);
+//        return orderMapper.toOrderResponse(order);
+//    }
+//
+//    @Override
+//    public OrderResponse toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest) {
+//        Optional<Order> orderOptional = orderRepo.findById(id);
+//        if (orderOptional.isEmpty()) {
+//            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
+//        }
+//        Order order = orderOptional.get();
+//        order.setStatusOrder(updateRequest.getStatusOrder());
+//        orderRepo.save(order);
+//        return orderMapper.toOrderResponse(order);
+//    }
 
     @Override
-    public InvoiceCompleted toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest) {
+    public OrderResponse updateStatus(Long id, OrderUpdateRequest updateRequest) {
         Optional<Order> orderOptional = orderRepo.findById(id);
         if (orderOptional.isEmpty()) {
             throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
         }
         Order order = orderOptional.get();
-        order.setStatusOrder(updateRequest.getStatusOrder());
+
+
+        StatusOrder newStatus = updateRequest.getStatusOrder();
+
+        StatusOrder currentStatus = order.getStatusOrder();
+
+        if (!check(currentStatus, newStatus)) {
+            throw new BusinessException(ErrorCode.INVALID_STATUS);
+        }
+        order.setStatusOrder(newStatus);
         orderRepo.save(order);
-        return completedMapper.toInvoiceCompleted(order);
+
+        return orderMapper.toOrderResponse(order);
+    }
+
+    private boolean check(StatusOrder currentStatus, StatusOrder newStatus) {
+        switch (currentStatus) {
+            case CHOXACNHAN:
+                return newStatus == StatusOrder.CHOGIAOHANG;
+            case CHOGIAOHANG:
+                return newStatus == StatusOrder.DANGGIAO;
+            case DANGGIAO:
+                return newStatus == StatusOrder.DAGIAO;
+            default:
+                return false;
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.fis.service;
 
+import com.example.fis.mapper.OrderMapper;
 import com.example.fis.model.request.order.OrderSaveRequest;
 import com.example.fis.model.request.order.OrderUpdateRequest;
 import com.example.fis.model.response.*;
@@ -19,7 +20,9 @@ public interface OrderService {
 
     InvoicePendingShip toInvoicePendingShip(Long id, OrderUpdateRequest updateRequest);
 
-    InvoiceShipping toInvoiceShipping(Long id, OrderUpdateRequest updateRequest);
+//    OrderResponse toInvoiceShipping(Long id, OrderUpdateRequest updateRequest);
+//
+//    OrderResponse toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest);
 
-    InvoiceCompleted toInvoiceCompleted(Long id, OrderUpdateRequest updateRequest);
+    OrderResponse updateStatus(Long id, OrderUpdateRequest updateRequest);
 }
