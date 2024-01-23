@@ -1,12 +1,15 @@
 package com.example.fis.service.impl;
 
 import com.example.fis.entity.Order;
+import com.example.fis.entity.User;
 import com.example.fis.enums.StatusOrder;
 import com.example.fis.exception.BusinessException;
 import com.example.fis.exception.ErrorCode;
 import com.example.fis.mapper.*;
+import com.example.fis.model.request.order.OrderSaveRequest;
 import com.example.fis.model.response.*;
 import com.example.fis.repository.OrderRepo;
+import com.example.fis.repository.UserRepo;
 import com.example.fis.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private final InvoiceCompletedMapper completedMapper;
 
     private final OrderMapper orderMapper;
+
+    private final UserRepo userRepo;
 
     @Override
     public List<InvoiceCancel> getInvoiceCancel() {

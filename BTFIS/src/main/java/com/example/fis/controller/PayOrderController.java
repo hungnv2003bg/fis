@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class PayOrderController {
     private final OrderCustomerService orderCustomerService;
 
-    @GetMapping
+    @GetMapping("{orderId}")
     public ResponseEntity<?> getDataPay(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderCustomerService.getDataPay(orderId));
     }

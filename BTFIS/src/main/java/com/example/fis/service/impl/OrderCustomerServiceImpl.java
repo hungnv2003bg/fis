@@ -44,108 +44,6 @@ public class OrderCustomerServiceImpl implements OrderCustomerService {
 
     private final CartMapper cartMapper;
 
-
-    @Override
-    public OrderResponse addOrder(OrderSaveRequest orderSaveRequest) {
-        Order order = orderMapper.toOrder(orderSaveRequest);
-        Optional<Address> addressOptional = addressRepo.findById(orderSaveRequest.getAddressId());
-        if (addressOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.ADDRESS_NOT_FOUD);
-        }
-        Optional<Pay> payOptional = payRepo.findById(orderSaveRequest.getPayId());
-        if (payOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.PAY_NOT_FOUD);
-        }
-        Optional<Ship> shipOptional = shipRepo.findById(orderSaveRequest.getShipId());
-        if (shipOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.SHIP_NOT_FOUD);
-        }
-        User customer = addressOptional.get().getUser();
-        order.setStatusOrder(StatusOrder.CHOXACNHAN);
-        order.setCreateDate(LocalDateTime.now());
-        order.setAddress(addressOptional.get());
-        order.setPay(payOptional.get());
-        order.setShip(shipOptional.get());
-        List<Cart> cartList = cartRepo.findCartsByCustomer(customer);
-        Double value = 0d;
-        for (Cart cart : cartList) {
-            Product product = productRepo.findById(cart.getProduct().getId()).get();
-            value += product.getPriceOutput() * cart.getQuantity();
-        }
-        order.setOrderValue(value + orderSaveRequest.getFeeShip());
-        orderRepo.save(order);
-        order.setCodeOrder("Order" + order.getId());
-        order.setOrderDetailList(createOrderDetail(cartList, order.getId()));
-        orderRepo.save(order);
-        return orderMapper.toOrderResponse(order);
-
-    }
-
-    @Override
-    public OrderResponse addOrderVnPay(OrderSaveRequest orderSaveRequest) {
-        Order order = orderMapper.toOrder(orderSaveRequest);
-        Optional<Address> addressOptional = addressRepo.findById(orderSaveRequest.getAddressId());
-        if (addressOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.ADDRESS_NOT_FOUD);
-        }
-        Optional<Pay> payOptional = payRepo.findById(orderSaveRequest.getPayId());
-        if (payOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.PAY_NOT_FOUD);
-        }
-        Optional<Ship> shipOptional = shipRepo.findById(orderSaveRequest.getShipId());
-        if (shipOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.SHIP_NOT_FOUD);
-        }
-        User customer = addressOptional.get().getUser();
-        order.setStatusOrder(StatusOrder.CHOTHANHTOANBANKING);
-        order.setCreateDate(LocalDateTime.now());
-        order.setAddress(addressOptional.get());
-        order.setPay(payOptional.get());
-        order.setShip(shipOptional.get());
-        List<Cart> cartList = cartRepo.findCartsByCustomer(customer);
-        Double value = 0d;
-        for (Cart cart : cartList) {
-            Product product = productRepo.findById(cart.getProduct().getId()).get();
-            value += product.getPriceOutput() * cart.getQuantity();
-        }
-        order.setOrderValue(value + orderSaveRequest.getFeeShip());
-        orderRepo.save(order);
-        order.setCodeOrder("Order" + order.getId());
-        order.setOrderDetailList(createOrderDetail(cartList, order.getId()));
-        orderRepo.save(order);
-        return orderMapper.toOrderResponse(order);
-    }
-
-    private void updateQuantity(long orderId) {
-        Order order = orderRepo.findById(orderId).get();
-        var detail = orderDetailRepo.findOrderDetailsByOrder(order);
-        for (var item : detail) {
-            Product pr = item.getProduct();
-            pr.setSoLuongTon(pr.getSoLuongTon() - item.getQuantity());
-            pr.setSoLuongDaBan(pr.getSoLuongDaBan() + item.getQuantity());
-            productRepo.save(pr);
-        }
-    }
-
-    @Override
-    public void checkPayVNPay(Long id, Long statusOrder) {
-        Optional<Order> orderOptional = orderRepo.findById(id);
-        if (orderOptional.isEmpty()) {
-            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
-        }
-        if (statusOrder == 0) {
-            List<Cart> cartList = cartRepo.findCartsByCustomer(orderOptional.get().getCustomer());
-            cartRepo.deleteAll(cartList);
-            updateQuantity(orderOptional.get().getId());
-            orderOptional.get().setDatePay(LocalDateTime.now());
-            orderOptional.get().setStatusOrder(StatusOrder.CHOGIAOHANG);
-            orderRepo.save(orderOptional.get());
-        } else {
-            orderOptional.get().setStatusOrder(StatusOrder.CANCEL);
-            orderRepo.save(orderOptional.get());
-        }
-    }
-
     @Override
     public CheckOut getDataPay(Long userId) {
         Optional<User> userOptional = userRepo.findById(userId);
@@ -161,6 +59,112 @@ public class OrderCustomerServiceImpl implements OrderCustomerService {
         return new CheckOut(listCartResponses, addressResponseList, payResponseList, shipResponses);
     }
 
+    private void updateQuantity(long orderId) {
+        Order order = orderRepo.findById(orderId).get();
+        var detail = orderDetailRepo.findOrderDetailsByOrder(order);
+        for (var item : detail) {
+            Product pr = item.getProduct();
+            pr.setSoLuongTon(pr.getSoLuongTon() - item.getQuantity());
+            pr.setSoLuongDaBan(pr.getSoLuongDaBan() + item.getQuantity());
+            productRepo.save(pr);
+        }
+    }
+
+    @Override
+    public OrderResponse addOrder(OrderSaveRequest orderSaveRequest) {
+        Order order = orderMapper.toOrder(orderSaveRequest);
+
+        Address address = addressRepo.findById(orderSaveRequest.getAddressId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ADDRESS_NOT_FOUD));
+        order.setAddress(address);
+
+        Pay pay = payRepo.findById(orderSaveRequest.getPayId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PAY_NOT_FOUD));
+        order.setPay(pay);
+
+        Ship ship = shipRepo.findById(orderSaveRequest.getShipId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.SHIP_NOT_FOUD));
+        order.setShip(ship);
+
+        User customer = address.getUser();
+        order.setStatusOrder(orderSaveRequest.getStatusOrder());
+        order.setCreateDate(LocalDateTime.now());
+
+        List<Cart> cartList = cartRepo.findCartsByCustomer(customer);
+        Double orderValue = cartList.stream()
+                .mapToDouble(cart -> {
+                    Product product = productRepo.findById(cart.getProduct().getId())
+                            .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUD));
+                    return product.getPriceOutput() * cart.getQuantity();
+                })
+                .sum();
+        order.setOrderValue(orderValue + orderSaveRequest.getFeeShip());
+        order.setFeeShip(orderSaveRequest.getFeeShip());
+        orderRepo.save(order);
+        order.setCodeOrder("Order" + order.getId());
+        order.setOrderDetailList(createOrderDetail(cartList, order.getId()));
+        orderRepo.save(order);
+
+        return orderMapper.toOrderResponse(order);
+    }
+
+    @Override
+    public OrderResponse addOrderVnPay(OrderSaveRequest orderSaveRequest) {
+        Order order = orderMapper.toOrder(orderSaveRequest);
+
+        Address address = addressRepo.findById(orderSaveRequest.getAddressId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ADDRESS_NOT_FOUD));
+        order.setAddress(address);
+
+        Pay pay = payRepo.findById(orderSaveRequest.getPayId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PAY_NOT_FOUD));
+        order.setPay(pay);
+
+        Ship ship = shipRepo.findById(orderSaveRequest.getShipId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.SHIP_NOT_FOUD));
+        order.setShip(ship);
+
+        User customer = address.getUser();
+        order.setStatusOrder(StatusOrder.CHOTHANHTOANBANKING);
+        order.setCreateDate(LocalDateTime.now());
+
+        List<Cart> cartList = cartRepo.findCartsByCustomer(customer);
+        Double orderValue = cartList.stream()
+                .mapToDouble(cart -> {
+                    Product product = productRepo.findById(cart.getProduct().getId())
+                            .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUD));
+                    return product.getPriceOutput() * cart.getQuantity();
+                })
+                .sum();
+        Double feeShip = orderSaveRequest.getOrderValue() != null ? orderSaveRequest.getFeeShip() : 0.0;
+
+        order.setOrderValue(orderValue + feeShip);
+        orderRepo.save(order);
+        order.setCodeOrder("Order" + order.getId());
+        order.setOrderDetailList(createOrderDetail(cartList, order.getId()));
+        orderRepo.save(order);
+
+        return orderMapper.toOrderResponse(order);
+    }
+
+    @Override
+    public void checkPayVNPay(Long id, Long statusOrder) {
+        Optional<Order> orderOptional = orderRepo.findById(id);
+        if (orderOptional.isEmpty()) {
+            throw new BusinessException(ErrorCode.ORDER_NOT_FOUD);
+        }
+        if (statusOrder == 4) {
+            List<Cart> cartList = cartRepo.findCartsByCustomer(orderOptional.get().getCustomer());
+            cartRepo.deleteAll(cartList);
+            updateQuantity(orderOptional.get().getId());
+            orderOptional.get().setDatePay(LocalDateTime.now());
+            orderOptional.get().setStatusOrder(StatusOrder.CHOXACNHAN);
+            orderRepo.save(orderOptional.get());
+        } else {
+            orderOptional.get().setStatusOrder(StatusOrder.CANCEL);
+            orderRepo.save(orderOptional.get());
+        }
+    }
 
 
     private List<OrderDetail> createOrderDetail(List<Cart> cartList, Long orderId) {

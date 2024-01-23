@@ -35,8 +35,8 @@ public class VNPayController {
         String vnp_OrderInfo = "Buy " + LocalDateTime.now().getSecond();
         String orderType = "2000";
         OrderResponse vnp_TxnRef = orderCustomerService.addOrderVnPay(orderSaveRequest);
-        String vnp_IpAddr = "42.114.34.177";
-        String vnp_TmnCode = "MXWCJ2KO";
+        String vnp_IpAddr = "127.0.0.1";
+        String vnp_TmnCode = "XN2B3Y35";
         Double amount = orderSaveRequest.getOrderValue() * 100;
         Map vnp_Params = new HashMap();
         vnp_Params.put("vnp_Version", vnp_Version);
