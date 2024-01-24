@@ -14,6 +14,7 @@ import com.example.fis.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -125,5 +126,8 @@ public class OrderServiceImpl implements OrderService {
                 status == StatusOrder.CHOXACNHAN;
     }
 
-
+    @Override
+    public BigDecimal sumRevenue(LocalDateTime selectedDateStart, LocalDateTime selectedDateEnd) {
+        return orderRepo.sumRevenue(selectedDateStart, selectedDateEnd);
+    }
 }
