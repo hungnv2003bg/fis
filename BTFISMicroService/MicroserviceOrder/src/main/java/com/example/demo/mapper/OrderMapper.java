@@ -30,11 +30,8 @@ public class OrderMapper {
 
     public OrderResponse toOrderResponse(Order order) {
         OrderResponse orderResponse = new OrderResponse();
-        orderResponse.setId(order.getId());
         orderResponse.setAddressId(order.getAddress());
         orderResponse.setCodeOrder(order.getCodeOrder());
-        orderResponse.setPayId(order.getPayId());
-        orderResponse.setShipId(order.getShipId());
         orderResponse.setNote(order.getNote());
         orderResponse.setCreateDate(order.getCreateDate());
         orderResponse.setUpdatedDate(order.getUpdatedDate());

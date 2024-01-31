@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail().equals("") || user.getPassword().equals("")) {
             throw new BusinessException(ErrorCode.EMAIL_AND_PASS_NOT_BLANK);
         }
-        if (user.getName().equals("") ) {
+        if (user.getName().equals("")) {
             throw new BusinessException(ErrorCode.NAME_NOT_BLANK);
         }
         if (user.getPhone().equals("")) {
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail().equals("") || user.getPassword().equals("")) {
             throw new BusinessException(ErrorCode.EMAIL_AND_PASS_NOT_BLANK);
         }
-        if (user.getName().equals("") ) {
+        if (user.getName().equals("")) {
             throw new BusinessException(ErrorCode.NAME_NOT_BLANK);
         }
         if (user.getPhone().equals("")) {

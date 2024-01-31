@@ -13,12 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResponse {
-    private Long id;
-    private Long customerId;
     private Long addressId;
     private String codeOrder;
-    private Long payId;
-    private Long shipId;
     private String note;
     private LocalDateTime createDate;
     private LocalDateTime updatedDate;
@@ -26,7 +22,6 @@ public class OrderResponse {
     private LocalDateTime datePay;
     private Double orderValue;
     private StatusOrder statusOrder;
-    private Long cartId;
     private List<OrderDetail> orderDetailList;
     private Double feeShip;
 }

@@ -18,6 +18,8 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customerid")
+    private Long customerId;
     private Long id;
     @Column(name = "addressid")
     private Long address;
@@ -41,8 +43,6 @@ public class Order {
     private Double orderValue;
     @Column(name = "status")
     private StatusOrder statusOrder;
-    @JoinColumn(name = "cartid")
-    private Long cartId;
     @OneToMany(mappedBy = "order")
     @JsonIgnore
     private List<OrderDetail> orderDetailList;

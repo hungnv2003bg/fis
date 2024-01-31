@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShipDTO {
     private Long id;
-    private String shipPay;
+    private String nameShip;
 }
