@@ -17,7 +17,6 @@ public class OrderMapper {
         Order order = new Order();
         order.setId(saveRequest.getId());
         order.setCodeOrder(saveRequest.getCodeOrder());
-        order.setCustomer(saveRequest.getCustomerId());
         order.setAddress(saveRequest.getAddressId());
         order.setPayId(saveRequest.getPayId());
         order.setShipId(saveRequest.getShipId());
@@ -32,7 +31,6 @@ public class OrderMapper {
     public OrderResponse toOrderResponse(Order order) {
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setId(order.getId());
-        orderResponse.setCustomerId(order.getCustomer());
         orderResponse.setAddressId(order.getAddress());
         orderResponse.setCodeOrder(order.getCodeOrder());
         orderResponse.setPayId(order.getPayId());

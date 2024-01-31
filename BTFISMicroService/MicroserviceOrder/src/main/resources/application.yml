@@ -11,3 +11,8 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: false
+services:
+  user_service_url: "http://localhost:8080/user/"
+  product_service_url: "http://localhost:8081/product/"
+  pay_service_url: "http://localhost:8083/pay/"
+  ship_service_url: "http://localhost:8083/ship/"

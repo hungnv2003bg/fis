@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResponseDTO {
+    private Long id;
     private String customerName;
     private String payName;
     private String shipName;

@@ -19,8 +19,6 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "customerid")
-    private Long customer;
     @Column(name = "addressid")
     private Long address;
     @Column(name = "codeorder")

@@ -17,4 +17,6 @@ public interface CartService {
 
     public List<ResponseCartDTO> deleteCart(Long id);
 
+    CartResponse getCartResponse(Long id);
+
 }
