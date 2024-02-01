@@ -5,7 +5,7 @@ import com.example.demo.model.response.OrderResponseDTO;
 
 import java.util.List;
 
-public interface OrderService {
+public interface OrderAdminService {
     List<OrderResponseDTO> getOrders();
 
     OrderResponse updateOrderStatus(Long id, String newStatus);
