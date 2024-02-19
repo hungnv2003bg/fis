@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class ResponseCartDTO {
     private BaseResponse<UserDTO> user;
     private CartResponse cart;
-    private ProductDTO product;
+//    private ProductDTO product;
 }

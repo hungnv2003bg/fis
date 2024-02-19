@@ -56,17 +56,18 @@ public class CartServiceImpl implements CartService {
 //    }
 
     @Override
-    public List<ResponseCartDTO> getCart(Long userId) {
-        List<Cart> carts = cartRepo.findByCustomerId(userId);
+    public List<ResponseCartDTO> getCart(Long customerId) {
+        List<Cart> carts = cartRepo.findByCustomerId(customerId);
         List<ResponseCartDTO> responseCartDTOs = new ArrayList<>();
 
         for (Cart cart : carts) {
-            BaseResponse<UserDTO> userResponse = userService.getUserById(userId);
+            BaseResponse<UserDTO> userResponse = userService.getUserById(cart.getCustomerId());
+            System.out.println(userResponse);
             ProductDTO productDTO = productService.getProductById(cart.getProductId());
 
             ResponseCartDTO responseCartDTO = new ResponseCartDTO();
             responseCartDTO.setUser(userResponse);
-            responseCartDTO.setProduct(productDTO);
+//            responseCartDTO.setProduct(productDTO);
             CartResponse cartResponse = cartMapper.toCartResponse(cart);
             responseCartDTO.setCart(cartResponse);
 

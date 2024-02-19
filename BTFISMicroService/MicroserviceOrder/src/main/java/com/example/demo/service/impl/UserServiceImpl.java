@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +26,17 @@ public class UserServiceImpl implements UserService {
     @Value("${services.user_service_url}")
     private String userServiceUrl;
 
-    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Override
     public BaseResponse<UserDTO> getUserById(Long id) {
         try {
-            logger.info("ID: {}", id);
-            ResponseEntity<UserDTO> responseEntity = restTemplate.exchange(
+            ResponseEntity<BaseResponse<UserDTO>> responseEntity = restTemplate.exchange(
                     userServiceUrl + id,
                     HttpMethod.GET,
                     null,
-                    UserDTO.class
+                    new ParameterizedTypeReference<>() {}
             );
-            UserDTO userDTO = responseEntity.getBody();
-            logger.info("User data: {}", userDTO);
+            BaseResponse<UserDTO> userResponse = responseEntity.getBody();
+            UserDTO userDTO = userResponse.getData();
 
             if (responseEntity.getStatusCode() == HttpStatus.OK && userDTO != null) {
                 return BaseResponse.success(userDTO);
