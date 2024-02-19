@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CartResponse {
     private Long id;
-    private String nameCustomer;
     private Integer quantity;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

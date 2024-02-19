@@ -29,23 +29,23 @@ public class OrderAdminServiceimpl implements OrderAdminService {
     public List<OrderResponseDTO> getOrders() {
         List<OrderResponseDTO> orderResponseDTOs = new ArrayList<>();
 
-        List<Order> orders = orderRepo.findAll();
-
-        for (Order order : orders) {
-            OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-
-            PayDTO payDTO = payService.getPayDto(order.getPayId());
-            ShipDTO shipDTO = shipService.getShipDto(order.getShipId());
-            UserDTO userDTO = userService.getUserById(order.getCustomerId());
-
-            OrderResponse orderResponse = orderMapper.toOrderResponse(order);
-            orderResponseDTO.setOrderResponse(orderResponse);
-            orderResponseDTO.setPayName(payDTO.getNamePay());
-            orderResponseDTO.setCustomerName(userDTO.getName());
-            orderResponseDTO.setShipName(shipDTO.getNameShip());
-
-            orderResponseDTOs.add(orderResponseDTO);
-        }
+//        List<Order> orders = orderRepo.findAll();
+//
+//        for (Order order : orders) {
+//            OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
+//
+//            PayDTO payDTO = payService.getPayDto(order.getPayId());
+//            ShipDTO shipDTO = shipService.getShipDto(order.getShipId());
+//            UserDTO userDTO = userService.getUserById(order.getCustomerId());
+//
+//            OrderResponse orderResponse = orderMapper.toOrderResponse(order);
+//            orderResponseDTO.setOrderResponse(orderResponse);
+//            orderResponseDTO.setPayName(payDTO.getNamePay());
+//            orderResponseDTO.setCustomerName(userDTO.getName());
+//            orderResponseDTO.setShipName(shipDTO.getNameShip());
+//
+//            orderResponseDTOs.add(orderResponseDTO);
+//        }
         return orderResponseDTOs;
     }
 

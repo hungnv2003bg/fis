@@ -19,18 +19,18 @@ public class CartValidation {
         this.productService = productService;
     }
 
-    public void validateData(CartSaveRequest cartSaveRequest) {
-        if (cartSaveRequest.getQuantity() <= 0) {
-            throw new BusinessException(ErrorCode.INVALID_QUANTITY_INPUT);
-        }
-
-        UserDTO userDTO = userService.getUserById(cartSaveRequest.getCustomerId());
-        if (userDTO == null) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUD);
-        }
-        ProductDTO productDTO = productService.getProductById(cartSaveRequest.getProductId());
-        if (productDTO == null) {
-            throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUD);
-        }
-    }
+//    public void validateData(CartSaveRequest cartSaveRequest) {
+//        if (cartSaveRequest.getQuantity() <= 0) {
+//            throw new BusinessException(ErrorCode.INVALID_QUANTITY_INPUT);
+//        }
+//
+//        UserDTO userDTO = userService.getUserById(cartSaveRequest.getCustomerId());
+//        if (userDTO == null) {
+//            throw new BusinessException(ErrorCode.USER_NOT_FOUD);
+//        }
+//        ProductDTO productDTO = productService.getProductById(cartSaveRequest.getProductId());
+//        if (productDTO == null) {
+//            throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUD);
+//        }
+//    }
 }

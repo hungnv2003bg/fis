@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.exception.BusinessCode;
+import com.example.demo.exception.BusinessException;
 import com.example.demo.model.request.product.ProductSaveRequest;
 import com.example.demo.model.request.product.ProductUpdateRequest;
+import com.example.demo.model.response.ProductResponse;
 import com.example.demo.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/product")
 @AllArgsConstructor
-public class ProductController {
+public class ProductController extends BaseController {
     private final ProductService productService;
 
     @GetMapping
@@ -22,7 +25,12 @@ public class ProductController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> getProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProduct(id));
+        try{
+            ProductResponse productResponse = productService.getProduct(id);
+            return success(productResponse);
+        }catch (Exception ex){
+            return error(new BusinessException(BusinessCode.NOT_FOUND));
+        }
     }
 
     @PostMapping

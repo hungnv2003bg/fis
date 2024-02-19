@@ -24,7 +24,7 @@ public class CartController extends BaseController {
             List<ResponseCartDTO> responseCartDTOS = cartService.getCart(userId);
             return success(responseCartDTOS);
         } catch (Exception ex) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
+            return error(new BusinessException(BusinessCode.NOT_FOUND));
         }
     }
 
@@ -56,7 +56,6 @@ public class CartController extends BaseController {
         } catch (Exception e) {
             return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
         }
-
     }
 
 }

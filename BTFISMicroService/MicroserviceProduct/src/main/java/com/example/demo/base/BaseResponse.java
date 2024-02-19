@@ -1,6 +1,5 @@
 package com.example.demo.base;
 
-
 import com.example.demo.exception.BusinessCode;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.exception.ResponseStatus;
@@ -12,7 +11,7 @@ public class BaseResponse<T> {
     private String message;
     private T data;
 
-    public BaseResponse(ResponseStatus responseStatus, T data) {
+    private BaseResponse(ResponseStatus responseStatus, T data) {
         this.code = responseStatus.getCode();
         this.message = responseStatus.getMessage();
         this.data = data;
