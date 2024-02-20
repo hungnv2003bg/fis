@@ -20,42 +20,29 @@ public class CartController extends BaseController {
 
     @GetMapping("{userId}")
     public ResponseEntity getCart(@PathVariable Long userId) {
-        try {
-            List<ResponseCartDTO> responseCartDTOS = cartService.getCart(userId);
-            return success(responseCartDTOS);
-        } catch (Exception ex) {
-            return error(new BusinessException(BusinessCode.NOT_FOUND));
-        }
+        List<ResponseCartDTO> responseCartDTOS = cartService.getCart(userId);
+        return success(responseCartDTOS);
+
     }
 
     @PostMapping
     public ResponseEntity addProduct(@RequestBody CartSaveRequest saveRequest) {
-        try {
-            ResponseCartDTO responseCartDTO = cartService.addProductToCart(saveRequest);
-            return success(responseCartDTO);
-        } catch (Exception ex) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
-        }
+        ResponseCartDTO responseCartDTO = cartService.addProductToCart(saveRequest);
+        return success(responseCartDTO);
     }
 
     @PutMapping("{cartId}")
     public ResponseEntity updateCart(@PathVariable Long cartId, @RequestBody CartSaveRequest saveRequest) {
-        try {
-            CartResponse cartResponse = cartService.updateCart(cartId, saveRequest);
-            return success(cartResponse);
-        } catch (Exception ex) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
-        }
+        CartResponse cartResponse = cartService.updateCart(cartId, saveRequest);
+        return success(cartResponse);
+
     }
 
     @DeleteMapping("{cartId}")
     public ResponseEntity deleteCart(@PathVariable Long cartId) {
-        try {
-            ResponseEntity.ok(cartService.deleteCart(cartId));
-            return success();
-        } catch (Exception e) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
-        }
+        ResponseEntity.ok(cartService.deleteCart(cartId));
+        return success();
+
     }
 
 }

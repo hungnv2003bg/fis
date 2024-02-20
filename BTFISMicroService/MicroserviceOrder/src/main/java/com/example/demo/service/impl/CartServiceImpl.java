@@ -1,15 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.base.BaseResponse;
+import com.example.demo.base.UserResponse;
 import com.example.demo.entity.Cart;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.CartMapper;
 import com.example.demo.model.request.cart.CartSaveRequest;
 import com.example.demo.model.response.CartResponse;
-import com.example.demo.model.response.ProductDTO;
 import com.example.demo.model.response.ResponseCartDTO;
-import com.example.demo.model.response.UserDTO;
 import com.example.demo.repo.CartRepo;
 import com.example.demo.service.CartService;
 import com.example.demo.service.ProductService;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,45 +35,29 @@ public class CartServiceImpl implements CartService {
     private final CartValidation cartValidation;
 
 
-//    @Override
-//    public List<ResponseCartDTO> getCart(Long userId) {
-//        List<Cart> carts = cartRepo.findByCustomerId(userId);
-//        List<ResponseCartDTO> responseCartDTOs = new ArrayList<>();
-//
-//        for (Cart cart : carts) {
-//            BaseResponse<UserDTO> userResponse = userService.getUserById(cart.getCustomerId());
-//            UserDTO userDTO = userResponse.getData();
-//            ProductDTO productDTO = productService.getProductById(cart.getProductId());
-//            ResponseCartDTO responseCartDTO = new ResponseCartDTO();
-//            responseCartDTO.setUserDTO(userDTO);
-//            responseCartDTO.setProduct(productDTO);
-//            CartResponse cartResponse = cartMapper.toCartResponse(cart);
-//            responseCartDTO.setCart(cartResponse);
-//            responseCartDTOs.add(responseCartDTO);
-//        }
-//        return responseCartDTOs;
-//    }
-
     @Override
     public List<ResponseCartDTO> getCart(Long userId) {
-        List<Cart> carts = cartRepo.findByCustomerId(userId);
-        List<ResponseCartDTO> responseCartDTOs = new ArrayList<>();
-
-        for (Cart cart : carts) {
-            BaseResponse<UserDTO> userResponse = userService.getUserById(cart.getCustomerId());
-
-            ProductDTO productDTO = productService.getProductById(cart.getProductId());
-
-            ResponseCartDTO responseCartDTO = new ResponseCartDTO();
-            responseCartDTO.setUser(userResponse);
-//            responseCartDTO.setProduct(productDTO);
-            CartResponse cartResponse = cartMapper.toCartResponse(cart);
-            responseCartDTO.setCart(cartResponse);
-
-            responseCartDTOs.add(responseCartDTO);
+        UserResponse userResponse = userService.getUserById(userId);
+        if (userResponse.getData() == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUD);
         }
+
+        List<Cart> carts = cartRepo.findByCustomerId(userId);
+
+        List<ResponseCartDTO> responseCartDTOs = carts.stream()
+                .map(cart -> {
+                    ResponseCartDTO responseCartDTO = new ResponseCartDTO();
+                    responseCartDTO.setUser(userResponse);
+                    CartResponse cartResponse = cartMapper.toCartResponse(cart);
+                    responseCartDTO.setCart(cartResponse);
+                    return responseCartDTO;
+                })
+                .toList();
+
         return responseCartDTOs;
     }
+
+
 
 
     @Override

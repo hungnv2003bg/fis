@@ -12,7 +12,7 @@ public class BusinessCode {
     public static final ResponseStatus TOKEN_EXPIRED =
             new ResponseStatus("TOKEN_EXPIRED", "Token expired", HttpStatus.UNAUTHORIZED);
     public static final ResponseStatus NOT_FOUND =
-            new ResponseStatus("NOT_FOUND", "Not Found", HttpStatus.NOT_FOUND);
+            new ResponseStatus("NOT_FOUND", "USER NOT FOUND", HttpStatus.NOT_FOUND);
     private BusinessCode() {
     }
 }

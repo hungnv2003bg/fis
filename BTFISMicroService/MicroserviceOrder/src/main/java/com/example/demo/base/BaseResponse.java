@@ -1,6 +1,5 @@
 package com.example.demo.base;
 
-
 import com.example.demo.exception.BusinessCode;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.exception.ResponseStatus;

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class CartResponse {
     private Long id;
     private Integer quantity;
+    private Long productId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }

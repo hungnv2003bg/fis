@@ -35,6 +35,7 @@ public class CartMapper {
         CartResponse cartResponse = new CartResponse();
         cartResponse.setId(cart.getId());
         cartResponse.setQuantity(cart.getQuantity());
+        cartResponse.setProductId(cart.getProductId());
         cartResponse.setCreateDate(cart.getCreateDate());
         cartResponse.setUpdateDate(cart.getUpdateDate());
         return cartResponse;

@@ -1,6 +1,6 @@
 package com.example.demo.model.response;
 
-import com.example.demo.base.BaseResponse;
+import com.example.demo.base.BaseResponseInternal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseCartDTO {
-    private BaseResponse<UserDTO> user;
+    private BaseResponseInternal user;
     private CartResponse cart;
-//    private ProductDTO product;
 }
