@@ -14,7 +14,6 @@ public class ApiHandlingController {
     @ExceptionHandler(value = BusinessException.class)
     public ResponseEntity<BaseResponse<Void>> handleBusinessException(BusinessException ex) {
         ResponseStatus responseStatus = ex.getResponseStatus();
-        return ResponseEntity.status(responseStatus.getHttpStatus())
-                .body(BaseResponse.fail(ex));
+        return ResponseEntity.status(responseStatus.getHttpStatus()).body(BaseResponse.fail(ex));
     }
 }

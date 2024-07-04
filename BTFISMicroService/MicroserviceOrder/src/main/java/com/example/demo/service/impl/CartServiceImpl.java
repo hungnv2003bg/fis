@@ -16,10 +16,8 @@ import com.example.demo.validation.CartValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +39,6 @@ public class CartServiceImpl implements CartService {
         if (userResponse.getData() == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUD);
         }
-
         List<Cart> carts = cartRepo.findByCustomerId(userId);
 
         List<ResponseCartDTO> responseCartDTOs = carts.stream()
@@ -56,8 +53,6 @@ public class CartServiceImpl implements CartService {
 
         return responseCartDTOs;
     }
-
-
 
 
     @Override

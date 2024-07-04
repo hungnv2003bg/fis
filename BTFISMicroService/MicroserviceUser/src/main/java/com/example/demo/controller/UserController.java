@@ -20,12 +20,8 @@ public class UserController extends BaseController {
 
     @GetMapping("{id}")
     public ResponseEntity getUser(@PathVariable Long id) {
-        try{
             UserResponse userResponse = userService.getUser(id);
             return success(userResponse);
-        }catch (Exception ex){
-            return error(new BusinessException(BusinessCode.NOT_FOUND));
-        }
     }
 
     @GetMapping

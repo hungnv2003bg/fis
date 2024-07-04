@@ -20,22 +20,15 @@ public class OrderController extends BaseController {
 
     @GetMapping
     public ResponseEntity getOrders() {
-        try {
-            List<OrderResponseDTO> orderResponseDTOS = orderService.getOrders();
-            return success(orderResponseDTOS);
-        } catch (Exception e) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
-        }
+        List<OrderResponseDTO> orderResponseDTOS = orderService.getOrders();
+        return success(orderResponseDTOS);
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity updateOrderStatus(@PathVariable("id") Long id, @RequestParam("newStatus") String newStatus) {
-        try {
-            OrderResponse updatedOrder = orderService.updateOrderStatus(id, newStatus);
-            return success(updatedOrder);
-        } catch (Exception e) {
-            return error(new BusinessException(BusinessCode.INTERNAL_SERVER_ERROR));
-        }
+    public ResponseEntity updateOrderStatus(@PathVariable("id") Long id,
+                                            @RequestParam("newStatus") String newStatus) {
+        OrderResponse updatedOrder = orderService.updateOrderStatus(id, newStatus);
+        return success(updatedOrder);
     }
 
 }
